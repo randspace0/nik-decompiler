@@ -19,3 +19,12 @@ bun run deploy   # nuxt generate + wrangler deploy (Cloudflare Workers static as
 curl -LO https://raw.githubusercontent.com/cahyadsn/wilayah/master/db/wilayah.sql
 node scripts/build-wilayah.mjs wilayah.sql
 ```
+
+## Kontribusi
+
+Issue dan pull request terbuka. Sebelum PR: `bun run test` dan `bun run generate` harus lulus.
+Jangan pernah memakai NIK atau foto KTP asli milik orang lain sebagai contoh, di kode, issue, maupun PR.
+
+## Lisensi
+
+[MIT](LICENSE). Data kode wilayah dari [cahyadsn/wilayah](https://github.com/cahyadsn/wilayah) (MIT).
