@@ -6,7 +6,20 @@ const CONTOH = '3310015208950000'
 const BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
 
 const input = ref('')
-const { data: wilayah, status, refresh } = useLazyFetch<Wilayah>('/wilayah.json', { server: false })
+const wilayah = ref<Wilayah>()
+const status = ref<'pending' | 'success' | 'error'>('pending')
+// Fetched client-side only: keeps the 170 kB table out of the prerendered payload.
+async function refresh() {
+  status.value = 'pending'
+  try {
+    wilayah.value = await $fetch<Wilayah>('/wilayah.json')
+    status.value = 'success'
+  }
+  catch {
+    status.value = 'error'
+  }
+}
+onMounted(refresh)
 
 const digits = computed(() => cleanNik(input.value))
 const result = computed(() => {
@@ -22,7 +35,7 @@ const error = computed(() => {
 const segments = computed(() => {
   const r = result.value
   if (!r) return []
-  const wilayahLoading = status.value === 'pending' || status.value === 'idle'
+  const wilayahLoading = status.value === 'pending'
   const nama = (n?: string) => n ?? (wilayahLoading ? 'Memuat…' : 'Tidak ditemukan')
   return [
     {
